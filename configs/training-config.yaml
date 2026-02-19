@@ -1,0 +1,159 @@
+# Training Configuration
+# This configuration file defines hyperparameters and data paths for
+# fine-tuning models with Oumi framework.
+#
+# IMPORTANT: Replace all <PLACEHOLDER> values with your actual paths
+# and settings before running the training process.
+
+# Hyperparameters
+hyperparameters:
+  # Learning rate schedule
+  learning_rate: 2.0e-5
+  lr_scheduler_type: "cosine"
+  warmup_steps: 100
+  
+  # Batch configuration
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  
+  # Training duration
+  num_train_epochs: 3
+  max_steps: -1  # Set to positive value to override num_train_epochs
+  
+  # Optimization
+  optimizer: "adamw_torch"
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1.0e-8
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  
+  # Precision
+  fp16: false
+  bf16: true
+  tf32: true
+
+# Data Paths
+data_paths:
+  # Training data
+  train_data:
+    # Local path to training dataset
+    local_path: "<LOCAL_TRAIN_DATA_PATH>"
+    # S3 path for training dataset (optional)
+    s3_path: "s3://<S3_BUCKET_NAME>/datasets/train/"
+    # Dataset format (alpaca, sharegpt, or custom)
+    format: "alpaca"
+  
+  # Validation data
+  eval_data:
+    # Local path to validation dataset
+    local_path: "<LOCAL_EVAL_DATA_PATH>"
+    # S3 path for validation dataset (optional)
+    s3_path: "s3://<S3_BUCKET_NAME>/datasets/eval/"
+    # Dataset format
+    format: "alpaca"
+  
+  # Output paths
+  output:
+    # Local output directory for checkpoints
+    checkpoint_dir: "<LOCAL_CHECKPOINT_DIR>"
+    # Final model output directory
+    model_dir: "<LOCAL_MODEL_DIR>"
+    # S3 path for model artifacts
+    s3_model_path: "s3://<S3_BUCKET_NAME>/model-artifacts/"
+    # Logs directory
+    logs_dir: "<LOCAL_LOGS_DIR>"
+
+# Sequence Configuration
+sequence:
+  # Maximum sequence length for training
+  max_seq_length: 2048
+  # Padding strategy
+  padding: "max_length"
+  # Truncation strategy
+  truncation: true
+  # Padding side
+  padding_side: "right"
+
+# Checkpointing
+checkpointing:
+  # Save checkpoint every N steps
+  save_steps: 100
+  # Maximum number of checkpoints to keep
+  save_total_limit: 3
+  # Save only the model weights (not optimizer state)
+  save_only_model: false
+  # Resume from checkpoint
+  resume_from_checkpoint: null  # Set to checkpoint path to resume
+
+# Evaluation
+evaluation:
+  # Evaluation strategy
+  strategy: "steps"
+  # Evaluate every N steps
+  eval_steps: 100
+  # Metrics to compute
+  metrics:
+    - "loss"
+    - "perplexity"
+  # Number of evaluation samples (-1 for all)
+  max_eval_samples: -1
+
+# Logging
+logging:
+  # Log every N steps
+  logging_steps: 10
+  # Logging level
+  logging_level: "info"
+  # Report to (tensorboard, wandb, none)
+  report_to: "tensorboard"
+  # Run name for tracking
+  run_name: "<RUN_NAME>"
+
+# Seed Configuration
+seed:
+  # Random seed for reproducibility
+  seed: 42
+  # Data seed
+  data_seed: 42
+
+# Dataset Configuration (Alpaca format)
+dataset:
+  # Alpaca dataset configuration
+  alpaca:
+    # Instruction column name
+    instruction_column: "instruction"
+    # Input column name
+    input_column: "input"
+    # Output column name
+    output_column: "output"
+    # Prompt template
+    prompt_template: |
+      Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+      ### Instruction:
+      {instruction}
+
+      ### Input:
+      {input}
+
+      ### Response:
+      {output}
+
+# Third-Party Dataset Attribution
+# When using the Alpaca dataset, verify compliance with Apache 2.0 license.
+# See: https://github.com/tatsu-lab/stanford_alpaca
+dataset_attribution:
+  name: "Stanford Alpaca"
+  license: "Apache-2.0"
+  source: "https://github.com/tatsu-lab/stanford_alpaca"
+  citation: |
+    @misc{alpaca,
+      author = {Rohan Taori and Ishaan Gulrajani and Tianyi Zhang and Yann Dubois and Xuechen Li and Carlos Guestrin and Percy Liang and Tatsunori B. Hashimoto},
+      title = {Stanford Alpaca: An Instruction-following LLaMA model},
+      year = {2023},
+      publisher = {GitHub},
+      journal = {GitHub repository},
+      howpublished = {\url{https://github.com/tatsu-lab/stanford_alpaca}},
+    }

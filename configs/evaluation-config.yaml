@@ -1,0 +1,17 @@
+# Oumi Evaluation Configuration
+#
+# Evaluates the fine-tuned model using standard benchmarks.
+# Update model_name to point to your trained model output directory.
+#
+# Usage:
+#   oumi evaluate -c configs/evaluation-config.yaml
+#
+# See: https://oumi.ai/docs/en/latest/user_guides/evaluate/evaluate.html
+
+model:
+  model_name: "models/final"
+
+tasks:
+  - evaluation_platform: lm_harness
+    task_name: mmlu
+    # num_samples: 5  # default: full evaluation dataset

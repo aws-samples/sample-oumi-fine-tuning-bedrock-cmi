@@ -1,0 +1,50 @@
+# Oumi Data Synthesis Configuration
+#
+# This example generates synthetic geography Q&A data using Amazon Bedrock.
+# Customize the strategy_params and inference_config for your use case.
+#
+# Usage:
+#   oumi synth -c configs/synthesis-config.yaml
+#
+# See: https://oumi.ai/docs/en/latest/user_guides/data_synthesis/data_synthesis.html
+#
+# Model Selection:
+#   The model_name below is a PLACEHOLDER for demonstration purposes.
+#   Before using this configuration, you must:
+#   1. Select an approved model from your organization's model catalog
+#   2. Verify the model is enabled in Amazon Bedrock model access
+#   3. Document the model selection in your project records
+#   4. Update model_name with the approved model identifier
+
+strategy: GENERAL
+num_samples: 50
+output_path: "data/synthetic_geography.jsonl"
+
+strategy_params:
+  sampled_attributes:
+    - id: difficulty
+      name: Difficulty
+      possible_values:
+        - id: easy
+        - id: hard
+  generated_attributes:
+    - id: question
+      instruction_messages:
+        - role: SYSTEM
+          content: "You are a geography teacher."
+        - role: USER
+          content: "Create a {difficulty} geography question. Output only the question."
+    - id: answer
+      instruction_messages:
+        - role: SYSTEM
+          content: "You are a helpful assistant."
+        - role: USER
+          content: "{question}"
+
+inference_config:
+  model:
+    # PLACEHOLDER: Replace with an approved model from Amazon Bedrock
+    # Example model: anthropic.claude-sonnet-4-6
+    model_name: "<APPROVED_MODEL_ID>"
+    model_max_length: 2048
+  engine: BEDROCK

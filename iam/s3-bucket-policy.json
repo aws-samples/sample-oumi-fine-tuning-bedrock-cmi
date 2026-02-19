@@ -1,0 +1,71 @@
+{
+  "_copyright": "Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.",
+  "_license": "SPDX-License-Identifier: MIT-0",
+  "_comment": "Amazon S3 bucket policy for model artifacts. IMPORTANT: This policy must be used in conjunction with S3 Block Public Access settings enabled at the account and bucket level. See docs/SECURITY.md for Block Public Access configuration requirements.",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnforceTLSRequestsOnly",
+      "_justification": "DENY statement with s3:* is intentional security control to block ALL non-HTTPS requests. This is a restrictive policy, not a permissive one.",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "EnforceTLSVersion",
+      "_justification": "DENY statement with s3:* is intentional security control to block ALL requests using TLS versions below 1.2. This is a restrictive policy, not a permissive one.",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ],
+      "Condition": {
+        "NumericLessThan": {
+          "s3:TlsVersion": "1.2"
+        }
+      }
+    },
+    {
+      "Sid": "AllowEC2InstanceProfileAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::<ACCOUNT_ID>:role/<EC2_INSTANCE_ROLE_NAME>"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ]
+    },
+    {
+      "Sid": "AllowBedrockImportRoleAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::<ACCOUNT_ID>:role/<BEDROCK_IMPORT_ROLE_NAME>"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ]
+    }
+  ]
+}

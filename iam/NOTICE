@@ -1,0 +1,33 @@
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+SPDX-License-Identifier: MIT-0
+
+All IAM policy and trust policy files in this directory are licensed
+under the above terms.
+
+Wildcard Justifications
+-----------------------
+The following statements use wildcard patterns. Each is documented here
+for security audit purposes.
+
+ec2-instance-profile.json
+  S3ModelArtifactsRead / S3ModelArtifactsWrite
+    <BUCKET_NAME>/* scoped to a single bucket. Object paths vary by
+    training run and model output.
+
+  BedrockImportJob
+    model-import-job/* required because job IDs are generated at
+    runtime. Scoped to account and region.
+
+  BedrockCustomModel
+    custom-model/* required because the model name is unknown at setup
+    time. For production: replace with the specific model ARN after
+    import (e.g. custom-model/abc123def456).
+
+  CloudWatchLogging
+    Log group wildcard (:*) is required by CloudWatch Logs to cover
+    the log group and its streams.
+
+bedrock-import-role.json
+  S3ReadModelArtifacts
+    <BUCKET_NAME>/* scoped to a single bucket. The Bedrock service
+    reads model artifacts at various paths during import.

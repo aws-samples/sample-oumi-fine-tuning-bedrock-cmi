@@ -1,0 +1,89 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3ModelArtifactsRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "arn:aws:s3:::<BUCKET_NAME>/*"
+    },
+    {
+      "Sid": "S3ModelArtifactsWrite",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::<BUCKET_NAME>/*"
+    },
+    {
+      "Sid": "S3BucketList",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::<BUCKET_NAME>"
+    },
+    {
+      "Sid": "BedrockCreateImportJob",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateModelImportJob"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockImportJobRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetModelImportJob",
+        "bedrock:ListModelImportJobs"
+      ],
+      "Resource": "arn:aws:bedrock:<REGION>:<ACCOUNT_ID>:model-import-job/*"
+    },
+    {
+      "Sid": "BedrockCustomModel",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetCustomModel",
+        "bedrock:ListCustomModels"
+      ],
+      "Resource": "arn:aws:bedrock:<REGION>:<ACCOUNT_ID>:custom-model/*"
+    },
+    {
+      "Sid": "BedrockInvokeModel",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel"
+      ],
+      "Resource": [
+        "arn:aws:bedrock:<REGION>:<ACCOUNT_ID>:custom-model/*",
+        "arn:aws:bedrock:<REGION>:<ACCOUNT_ID>:imported-model/*"
+      ]
+    },
+    {
+      "Sid": "BedrockPassRole",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": "arn:aws:iam::<ACCOUNT_ID>:role/BedrockModelImportRole",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "bedrock.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "CloudWatchLogging",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:<REGION>:<ACCOUNT_ID>:log-group:/aws/ec2/oumi-fine-tuning:*"
+    }
+  ]
+}

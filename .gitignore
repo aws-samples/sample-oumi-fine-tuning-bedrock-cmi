@@ -1,0 +1,7 @@
+CLAUDE.md
+blog_content/
+node_modules/
+.DS_Store
+ASH_SECURITY_SCAN_RESULTS-*.md
+docs/SECURITY_SCAN_RESULTS.md
+local/
