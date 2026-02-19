@@ -46,6 +46,5 @@ training:
   dataloader_prefetch_factor: 32
   empty_device_cache_steps: 50
   include_performance_metrics: True
-  mixed_precision_dtype: "BF16"
   enable_tensorboard: true
   enable_wandb: False
