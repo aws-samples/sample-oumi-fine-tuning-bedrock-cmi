@@ -22,7 +22,7 @@ This repository is a companion to the AWS Blog post **"Accelerate custom AI mode
 |  |         |   |      |  |Artifacts|   |      |  |Imported |---+----->|  | Web/API |   |
 |  +---------+   |      |  +---------+   |      |  | Model   |   |      |  +---------+   |
 +----------------+      +----------------+      |  +---------+   |      +----------------+
-                                               +----------------+
+                                                +----------------+
 ```
 
 | Component | AWS Service | Purpose |
@@ -123,7 +123,7 @@ To generate synthetic data using Amazon Bedrock as the inference backend, update
 oumi synth -c configs/synthesis-config.yaml
 ```
 
-Output is written to `data/synthetic_geography.jsonl`. Your EC2 instance role must allow `bedrock:InvokeModel` on the foundation model you choose. See [Oumi data synthesis docs](https://oumi.ai/docs/en/latest/user_guides/data_synthesis/data_synthesis.html) for details.
+Output is written to `data/synthetic_geography.jsonl`. Your EC2 instance role must allow `bedrock:InvokeModel` on the foundation model you choose. See [Oumi data synthesis docs](https://oumi.ai/docs/en/latest/user_guides/synth.html) for details.
 
 ### Step 3. Fine-Tune Model
 
