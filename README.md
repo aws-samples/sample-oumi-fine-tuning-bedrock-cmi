@@ -67,7 +67,10 @@ Use `--dry-run` to preview all commands without executing them:
 
 > If you do not have permissions to create IAM roles or launch EC2 instances, share this repository with your IT administrator and ask them to complete this section to set up your AWS environment.
 
-Once the instance is running, the script outputs the SSH command and the Bedrock import role ARN (needed in Step 5). SSH into the instance and continue with the Quick Start below.
+Once the instance is running, the script outputs the SSH command and the Bedrock import role ARN (needed in Step 5). 
+> **Note**: The script outputs a **Bedrock Role ARN** on completion. Save this value, you will need it in Step 5 when importing your model into Amazon Bedrock with `import-to-bedrock.sh`.
+
+SSH into the instance and continue with the Quick Start below.
 
 See [iam/README.md](iam/README.md) for IAM policy details, scoping guidance, and validation steps.
 
@@ -168,6 +171,10 @@ Still on the EC2 instance, upload model artifacts to S3:
 Import the model into Amazon Bedrock. Set `BEDROCK_ROLE_ARN` to the Bedrock Role ARN from the `setup-aws-env.sh` output (format: `arn:aws:iam::<ACCOUNT_ID>:role/BedrockModelImportRole`):
 
 ```bash
+export BEDROCK_ROLE_ARN="arn:aws:iam::<ACCOUNT_ID>:role/BedrockModelImportRole"
+```
+
+```bash
 ./scripts/import-to-bedrock.sh \
   --model-name my-fine-tuned-llama \
   --s3-uri s3://$S3_BUCKET/$S3_PREFIX \
@@ -175,7 +182,12 @@ Import the model into Amazon Bedrock. Set `BEDROCK_ROLE_ARN` to the Bedrock Role
   --wait
 ```
 
-Test the deployed model using the model ARN or ID returned by the import:
+Test the deployed model using the model ARN or ID returned by the import. Set it as a variable first:
+
+```bash
+export MODEL_ARN=<YOUR_MODEL_ARN>
+```
+Then invoke the model:
 
 ```bash
 ./scripts/invoke-model.sh --model-id $MODEL_ARN --prompt "Your test prompt here"

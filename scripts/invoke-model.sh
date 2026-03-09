@@ -123,7 +123,7 @@ parse_arguments() {
         shift 2
         ;;
       --prompt)
-        if [[ -z "${2:-}" ]]; then
+        if [[ $# -lt 2 ]]; then
           log_error "Prompt argument requires a value"
           return "$EXIT_INVALID_ARGS"
         fi
