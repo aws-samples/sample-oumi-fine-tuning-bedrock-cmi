@@ -37,9 +37,7 @@ training:
   learning_rate: 2.0e-5
   lr_scheduler_type: "cosine"
   logging_steps: 10
-  save_steps: 100
-  eval_strategy: "steps"
-  eval_steps: 100
+  save_steps: 3000
   enable_gradient_checkpointing: False
   compile: False
   dataloader_num_workers: "auto"

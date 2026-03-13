@@ -15,7 +15,7 @@ training:
   optimizer: "adamw_torch_fused"
   learning_rate: 2.0e-5
   logging_steps: 10
-  save_steps: 100
+  save_steps: 3000
   enable_gradient_checkpointing: False
   compile: False
   dataloader_num_workers: "auto"
